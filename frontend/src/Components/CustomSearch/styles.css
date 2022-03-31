@@ -1,0 +1,79 @@
+.searchInputContainer {
+   width: 35vw;
+   height: 60px;
+   border-radius: 40px;
+   display: flex;
+}
+
+
+.searchInput {
+   background-color: #212946;
+   border-radius: 40px 0 0px 40px;
+   outline: none;
+   border: 0px;
+   height: 100%;
+   width: 88%;
+   font-size: 20px;
+   padding-left: 70px;
+}
+
+.removeSearchButton {
+   border: none;
+   position: absolute;
+   display: flex;
+   align-items: center;
+   align-self: center;
+   margin-left: 15px;
+   color: red;
+}
+
+.removeSearchButton:hover {
+   cursor: pointer;
+}
+
+.searchButton {
+   width: 12%;
+   height: 100%;
+   background-color: #469EF1;
+   border-radius: 0px 40px 40px 0px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+   transition: all .2s ease;
+}
+
+.searchButton:hover {
+   background-color: #418ed6;
+
+}
+
+.searchIcon {
+   height: 26px;
+   width: 26px
+}
+
+.searchSpinner {
+   border: 7.5px solid white;
+   border-top: 7.5px solid #469EF1;
+   border-radius: 50%;
+   width: 15px;
+   height: 15px;
+   -webkit-animation: spin 2s linear infinite; /* Safari */
+   animation: spin .35s linear infinite;
+ }
+
+ /* Safari */
+@-webkit-keyframes spin {
+   0% { -webkit-transform: rotate(0deg); }
+   100% { -webkit-transform: rotate(360deg); }
+ }
+ 
+ @keyframes spin {
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
+ }
+
+ button:active {
+   border-style: outset;
+ }

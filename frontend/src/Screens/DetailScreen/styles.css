@@ -1,0 +1,73 @@
+.detailScreenMainContainer { 
+   width: 100vw;
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ 
+   /* background-color: #121936; */
+}
+
+.detailScreenSubContainer {
+   width: 80vw;
+   height: 80vh;
+   /* background-color: lightseagreen; */
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+}
+
+.detailScreenContentContainer {
+   height: 90%;
+   /* background-color: grey; */
+   display: flex;
+}
+
+.detailScreenLeftCardContainer {
+   width: 30%;
+   /* background-color: red; */
+   border-radius: 30px;
+   background: linear-gradient(97.35deg, rgba(255, 255, 255, 0.06) 17.74%, rgba(255, 255, 255, 0.1) 87.41%);
+   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+   backdrop-filter: blur(40px);
+}
+
+.detailScreenRightCardContainer {
+   flex: 1;
+   margin-left: 5%;
+   /* background-color: green; */
+   background: linear-gradient(97.35deg, rgba(255, 255, 255, 0.06) 17.74%, rgba(255, 255, 255, 0.1) 87.41%);
+   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+   backdrop-filter: blur(40px);
+   border-radius: 30px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.pokemonPropertyBlockContainer {
+   flex: 1;
+   width: 70%;
+   /* background-color: rgb(0, 50, 97); */
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.propertyDivisor {
+   width: 90%;
+   height: 10px;
+   background-color: rgba(255, 255, 255, 0.06);
+   /* background-color: blue; */
+   border-radius: 50px;
+}
+
+.pokemonDetailProperty {
+   font-size: 25px;
+   font-weight: 600;
+}
+
+.pokemonDetailValue {
+   font-weight: 700;
+   font-size: 40px;
+}

@@ -1,12 +1,13 @@
 
-import CustomSearch from '../../Components/CustomSearch/index';
 import "./styles.css"
-import PokemonCard from '../../Components/PokemonCard/index';
 import { useEffect, useState, } from 'react';
 import axios from 'axios';
-import { PokemonQuickView } from '../../Entities/PokemonQuickView';
+import CustomSearch from '../../Components/CustomSearch/index';
+import PokemonCard from '../../Components/PokemonCard/index';
 import pokemonLogo from '../../Assets/pokemonLogo.png'
 import thinkingPikachu from '../../Assets/thinkingPikachu.png'
+import { useHistory } from 'react-router-dom';
+import { PokemonQuickView } from '../../Entities/PokemonQuickView';
 
 const HomeScreen = () => {
    const [pokemonsListToRender, setPokemonsListToRender] = useState<any[]>([])
@@ -20,7 +21,9 @@ const HomeScreen = () => {
    const [userHasSearchedSomething, setUserHasSearchedSomething] = useState<boolean>(false)
    const [noPokemonsWereFound, setNoPokemonsWereFound] = useState<boolean>(false)
    const noResultsFoundMessageTitle = "Sorry! No result found :("
-   const noResultsFoundMessage = `We couldnt found any pokemon that matches your current search. ${<br />} Please try another name`
+   const noResultsFoundMainMessage = "We couldn't found any pokemon that matches your current search. "
+   const noResultsFoundSecondMessage = "Please try another name!"
+   const history = useHistory();
 
    useEffect(() => {
       setLoadingFirstPage(true)
@@ -32,24 +35,30 @@ const HomeScreen = () => {
    }, [])
 
 
-   const listPokemons = async (pageToTake: number, textSearched: string) => {
+   const listPokemons = async (pageToTake: number, textSearched: string): Promise<PokemonQuickView[]> => {
       setLoading(true)
-      const response = await axios.get("http://localhost:3002/pokemons/list/", { params: { page: pageToTake, name: textSearched.trim() } })
-      console.log("response: ", response)
-      if (response.data.pokemonsList.length === 0) {
+      const response = await axios.get("http://localhost:3001/pokemons/list/", { params: { page: pageToTake, name: textSearched.trim() } })
+      verifyPokemonExistence(response.data.pokemonsList)
+      setPageToTake(pageToTake + 1)
+      verifyIfCanLoadMorePages(response.data)
+      setLoading(false)
+      return toPokemonsQuickView(response.data.pokemonsList)
+   }
+
+   const verifyPokemonExistence = (pokemonsList: any[]) => {
+      if (pokemonsList.length === 0) {
          setNoPokemonsWereFound(true)
       } else {
          setNoPokemonsWereFound(false)
       }
-      const pokemonsList = toPokemonsQuickView(response.data.pokemonsList)
-      setPageToTake(pageToTake + 1)
-      if (response.data.next) {
+   }
+
+   const verifyIfCanLoadMorePages = (pokemonsResponse: any) => {
+      if (pokemonsResponse.next) {
          setCanLoadMorePokemons(true)
       } else {
          setCanLoadMorePokemons(false)
       }
-      setLoading(false)
-      return pokemonsList
    }
 
    const toPokemonsQuickView = (pokemonsList: any[]): PokemonQuickView[] => {
@@ -66,21 +75,17 @@ const HomeScreen = () => {
       return pokemonListFiltered
    }
 
-   const searchPokemons = async (e: any) => {
-      e.preventDefault()
+   const searchPokemons = async (event: any) => {
+      event.preventDefault()
       if (!loading) {
-         if (textSearched.trim() === "") return alert("User type nothing to search")
+         if (textSearched.trim() === "") return
          setLoadingPokemonsSearch(true)
-         const pokemonsResponse = await listPokemons(1, textSearched)
+         const pokemonsResponse = await listPokemons(1, textSearched.toLowerCase())
          setPokemonsListToRender(pokemonsResponse)
          setUserHasSearchedSomething(true)
          setLoadingPokemonsSearch(false)
       }
    }
-
-   // const fetchPokemonsList = async () => {
-   //    return await listPokemons(1, textSearched)
-   // }
 
    const loadMorePokemons = async () => {
       if (!loading) {
@@ -97,22 +102,22 @@ const HomeScreen = () => {
 
    const onClearSearch = async () => {
       setLoadingPokemonsSearch(true)
-      setTextSearched("")
       const pokemonsResponse = await listPokemons(1, "")
       setPokemonsListToRender(pokemonsResponse)
       setUserHasSearchedSomething(false)
       setLoadingPokemonsSearch(false)
+      setTextSearched("")
    }
 
    return (
-      <div className='pokedexScreenContainer'>
+      <div className='homeScreenContainer'>
          {loadingFirstPage &&
-            <div className='mainHomeLoaderContainer'>
+            <div className='mainScreenLoaderContainer'>
                <div className='mainHomeLoader'></div>
             </div>
          }
-         <img src={pokemonLogo} alt="pokemon-logo" className='pokemonLogo' />
-         <div className='searchContainer'>
+         <img src={pokemonLogo} onClick={() => history.push("/home")} alt="pokemon-logo" className='pokemonLogo' />
+         <div className='homeSearchContainer'>
             <CustomSearch
                onClearSearch={onClearSearch}
                textSearched={textSearched}
@@ -122,13 +127,14 @@ const HomeScreen = () => {
                userHasSearchedSomething={userHasSearchedSomething}
             />
          </div>
-         <div className='pokedexScreenSubContainer'>
+         <div className='homeScreenSubContainer'>
             {noPokemonsWereFound &&
                <div className='noPokemonsFoundMessageContainer'>
                   <div className='noPokemonsFoundMessageSubContainer'>
-                     <img src={thinkingPikachu} className="noPokemonsFoundImage" />
+                     <img src={thinkingPikachu} alt="thinking-pikachu" className="noPokemonsFoundImage" />
                      <h3 className='noPokemonsFoundMessageTitle'>{noResultsFoundMessageTitle}</h3>
-                     <p className='noPokemonsFoundMessage'>{noResultsFoundMessage} </p>
+                     <p className='noPokemonsFoundMessage'>{noResultsFoundMainMessage} </p>
+                     <p className='noPokemonsFoundMessage'>{noResultsFoundSecondMessage} </p>
                   </div>
                </div>
             }

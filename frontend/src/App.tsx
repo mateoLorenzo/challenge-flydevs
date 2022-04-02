@@ -1,9 +1,8 @@
 import HomeScreen from './Screens/HomeScreen/index';
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route, Switch, } from 'react-router-dom';
 import PokemonDetailScreen from './Screens/DetailScreen/index';
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <Switch>

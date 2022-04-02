@@ -46,11 +46,11 @@ app.get('/pokemons/list/', async (req: any, res: any) => {
    res.json(responseToFront)
 })
 
-const getIdFromQuery = (request: any) => {
+const getIdFromQuery = (request: any): number => {
    return parseInt(request.query.id)
 }
 
-const fetchPokemonInfo = async (pokemonDetail: string, pokemonId: number) => {
+const fetchPokemonInfo = async (pokemonDetail: string, pokemonId: number): Promise<any> => {
    let pokemonResponse;
    try {
       pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/${pokemonDetail}/${pokemonId}/`)
@@ -72,7 +72,7 @@ const filterPokemonDetailResponse = (
    )
 }
 
-const getPokemonDescriptionValue = (pokemonResponse: any) => {
+const getPokemonDescriptionValue = (pokemonResponse: any): string => {
    if (!pokemonResponse.data) return pokemonResponse
    const completePokemonDescription = pokemonResponse.data.descriptions.find((description: any) => {
       return description.language.name === "en"
@@ -80,9 +80,9 @@ const getPokemonDescriptionValue = (pokemonResponse: any) => {
    return completePokemonDescription.description
 }
 
-const getPokemonResponseValue = (pokemonResponse: "Unknown" | any) => {
+const getPokemonResponseValue = (pokemonResponse: "Unknown" | any): string => {
    if (!pokemonResponse.data) return pokemonResponse
-   return pokemonResponse.data.name
+   return capitalizeFirstLetter(pokemonResponse.data.name)
 }
 
 const loadPokemonsNames = async () => {
@@ -92,19 +92,19 @@ const loadPokemonsNames = async () => {
    }
 }
 
-const getAllPokemonsReference = async () => {
+const getAllPokemonsReference = async (): Promise<any> => {
    const allPokemonsReferenceResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/`, { params: { limit: 1200, page: 1 } })
    return allPokemonsReferenceResponse.data.results
 }
 
-const getPokemonsNames = (allPokemonsReference: any[]) => {
+const getPokemonsNames = (allPokemonsReference: any[]): string[] => {
    const pokemonsNames = allPokemonsReference.map((pokemon: any) => {
       return pokemon.name
    })
    return pokemonsNames
 }
 
-const getQueryValues = (request: any) => {
+const getQueryValues = (request: any): {page: number, limit: number, name: string} => {
    let page = 1
    let limit = 20
    if (request.query.page) {
@@ -122,7 +122,7 @@ const calculateResponseLength = (page: number, limit: number) => {
    return { startIndex, endIndex }
 }
 
-const getListOfPokemonsToFetch = (name: string, startIndex: number, endIndex: number): any => {
+const getListOfPokemonsToFetch = (name: string, startIndex: number, endIndex: number): any[] => {
    let listOfPokemonsToFetch: string[];
    if (name) {
       savePokemonsSearchedNames(name)
@@ -139,7 +139,7 @@ const savePokemonsSearchedNames = (name: string) => {
    })
 }
 
-const fetchPokemons = async (pokemonsNamesList: string[]) => {
+const fetchPokemons = async (pokemonsNamesList: string[]): Promise<any[]> => {
    const myArray = await Promise.all(pokemonsNamesList.map(async (pokemonName) => {
       const actualPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`)
       return actualPokemon.data
@@ -152,7 +152,7 @@ const filterPokemonsProperties = (pokemonsList: any[]): PokemonQuickViewResponse
       const pokemonTypes = getPokemonTypes(pokemon.types)
       return new PokemonQuickViewResponse(
          pokemon.sprites.other['official-artwork'].front_default,
-         pokemon.name,
+         capitalizeFirstLetter(pokemon.name),
          pokemon.id,
          pokemonTypes,
          pokemon.height,
@@ -164,19 +164,29 @@ const filterPokemonsProperties = (pokemonsList: any[]): PokemonQuickViewResponse
 
 const getPokemonTypes = (pokemonTypes: any): string[] => {
    const pokemonTypesNames = pokemonTypes.map((pokemonType: any) => {
-      return pokemonType.type.name
+      return capitalizeFirstLetter(pokemonType.type.name)
    })
    return pokemonTypesNames
 }
 
-const getPokemonsReferenceList = (name: string) => {
+const capitalizeFirstLetter = (wordToCapitalize: string): string => {
+   return wordToCapitalize.charAt(0).toUpperCase() + wordToCapitalize.slice(1);
+}
+
+const getPokemonsReferenceList = (name: string): string[] => {
    if (name) {
       return pokemonsSearchedNames
    }
    return allPokemonsNames
 }
 
-const getPreviousAndNextPage = (pokemonsNamesReference: string[], startIndex: number, endIndex: number, page: number, limit: number) => {
+const getPreviousAndNextPage = (
+   pokemonsNamesReference: string[],
+   startIndex: number,
+   endIndex: number,
+   page: number,
+   limit: number
+): any => {
    let previousAndNextPage = {}
    if (startIndex > 1) {
       previousAndNextPage = {
@@ -199,5 +209,4 @@ const getPreviousAndNextPage = (pokemonsNamesReference: string[], startIndex: nu
    return previousAndNextPage
 }
 
-app.listen('3002', () => console.log("listening on port 3002"))
-//npm run dev
+app.listen('3001', () => console.log("listening on port 3001"))

@@ -1,41 +1,124 @@
-.detailScreenMainContainer { 
+.detailScreenMainContainer {
    width: 100vw;
    height: 100vh;
    display: flex;
    justify-content: center;
    align-items: center;
- 
-   /* background-color: #121936; */
 }
 
 .detailScreenSubContainer {
-   width: 80vw;
+   width: 75vw;
    height: 80vh;
-   /* background-color: lightseagreen; */
    display: flex;
    flex-direction: column;
    justify-content: space-between;
 }
 
+.goBackButtonContainer {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 80px;
+   cursor: pointer;
+}
+
 .detailScreenContentContainer {
    height: 90%;
-   /* background-color: grey; */
    display: flex;
 }
 
 .detailScreenLeftCardContainer {
-   width: 30%;
-   /* background-color: red; */
+   width: 27%;
    border-radius: 30px;
    background: linear-gradient(97.35deg, rgba(255, 255, 255, 0.06) 17.74%, rgba(255, 255, 255, 0.1) 87.41%);
    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
    backdrop-filter: blur(40px);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 }
+
+.pokemonDetailImage {
+   background-position: center;
+   background-size: contain;
+   background-repeat: no-repeat;
+   width: 95%;
+   margin-top: 2%;
+   height: 50%;
+   background-position: center;
+}
+
+.pokemonDetailName {
+   font-weight: 700;
+   font-size: 50px;
+   width: 80%;
+   text-align: center;
+}
+
+.leftBlockDetailsContainer {
+   width: 80%;
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-evenly;
+   align-items: center;
+}
+
+.leftBlockFirstPokemonDetails {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+
+}
+
+.pokemonDetail-id {
+   font-weight: 400;
+   font-size: 25px;
+}
+
+.pokemonDetail-description {
+   font-weight: 500;
+   font-size: 25px;
+   text-align: right;
+   width: 75%;
+}
+
+.leftBlockDivisorLine {
+   width: 100%;
+   height: 10px;
+   background-color: rgba(255, 255, 255, 0.06);
+}
+
+.leftBlock-PokemonTypesContainer {
+   width: 105%;
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+}
+
+.leftBlock-pokemonType {
+   width: 45%;
+   margin: 2.5% 2.5%;
+   height: 50px;
+   background: linear-gradient(97.35deg, rgba(255, 255, 255, 0.06) 17.74%, rgba(255, 255, 255, 0.041) 87.41%);
+   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+   backdrop-filter: blur(40px);
+   border-radius: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.pokemonDetail-PokemonTypeText {
+   color: white;
+   font-size: 20px;
+   font-weight: 400;
+}
+
 
 .detailScreenRightCardContainer {
    flex: 1;
-   margin-left: 5%;
-   /* background-color: green; */
+   margin-left: 3%;
    background: linear-gradient(97.35deg, rgba(255, 255, 255, 0.06) 17.74%, rgba(255, 255, 255, 0.1) 87.41%);
    box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
    backdrop-filter: blur(40px);
@@ -43,12 +126,17 @@
    display: flex;
    flex-direction: column;
    align-items: center;
+   justify-content: center;
+}
+
+.pokemonDetailTransparentPokeball {
+   height: 90%;
+   position: absolute;
 }
 
 .pokemonPropertyBlockContainer {
    flex: 1;
    width: 70%;
-   /* background-color: rgb(0, 50, 97); */
    display: flex;
    justify-content: space-between;
    align-items: center;
@@ -58,7 +146,6 @@
    width: 90%;
    height: 10px;
    background-color: rgba(255, 255, 255, 0.06);
-   /* background-color: blue; */
    border-radius: 50px;
 }
 
